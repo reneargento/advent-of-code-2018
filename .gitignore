@@ -13,4 +13,5 @@
 .project
 .settings/
 bin/
+out/
 advent-of-code-2018.iml
