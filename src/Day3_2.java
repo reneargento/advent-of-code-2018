@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -52,15 +56,16 @@ public class Day3_2 {
         }
     }
 
+    private static final String PATH = "/Users/rene/Desktop/Algorithms/Competitions/Advent of Code/2018/";
+    private static final String FILE_INPUT_PATH = PATH + "day3_2.txt";
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        long startTime = System.currentTimeMillis();
+
         int dimension = 1000;
-        List<String> claims = new ArrayList<>();
         FenwickTree2DRangeUpdate fenwickTree2D = new Day3_2().new FenwickTree2DRangeUpdate(dimension, dimension);
 
-        while (scanner.hasNext()) {
-            claims.add(scanner.nextLine());
-        }
+        List<String> claims = readFileInput(FILE_INPUT_PATH);
 
         for (String claim : claims) {
             String[] values = claim.split(" ");
@@ -93,7 +98,6 @@ public class Day3_2 {
                 for (int c = column + 1; c <= column + width; c++) {
                     if (fenwickTree2D.pointQuery(r, c) != 1) {
                         isUnique = false;
-                        System.out.println(fenwickTree2D.pointQuery(r, c));
                         break;
                     }
                 }
@@ -109,6 +113,24 @@ public class Day3_2 {
         }
 
         System.out.println("Unique claim: " + uniqueClaim);
+
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println("Elapsed time: " + elapsedTime + " milliseconds");
+    }
+
+    private static List<String> readFileInput(String filePath) {
+        Path path = Paths.get(filePath);
+        List<String> valuesList = new ArrayList<>();
+
+        try {
+            List<String> lines = Files.readAllLines(path);
+            valuesList.addAll(lines);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return valuesList;
     }
 
 }
