@@ -9,8 +9,14 @@ public class Day14 {
         int recipes = 157901;
         System.out.println("Score: " + getScore(recipes + 10));
 
+        long startTime = System.currentTimeMillis();
+
         String targetRecipe = "157901";
         System.out.println("Recipe number: " + getRecipe(targetRecipe));
+
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println("Elapsed time: " + elapsedTime + " milliseconds");
     }
 
     private static String getScore(int recipes) {
@@ -22,13 +28,20 @@ public class Day14 {
             int elf1Score = elf1.item;
             int elf2Score = elf2.item;
 
-            String newScore = String.valueOf(elf1Score + elf2Score);
+            int newScore = elf1Score + elf2Score;
 
-            int newScore1 = Integer.parseInt(newScore.substring(0, 1));
+            int newScore1;
+
+            if (newScore < 10) {
+                newScore1 = newScore;
+            } else {
+                newScore1 = newScore / 10;
+            }
+
             doublyLinkedListCircular.insertAtTheEnd(newScore1);
 
-            if (newScore.length() > 1) {
-                int newScore2 = Integer.parseInt(newScore.substring(1, 2));
+            if (newScore >= 10) {
+                int newScore2 = newScore % 10;
                 doublyLinkedListCircular.insertAtTheEnd(newScore2);
                 recipe++;
             }
@@ -56,9 +69,16 @@ public class Day14 {
             int elf1Score = elf1.item;
             int elf2Score = elf2.item;
 
-            String newScore = String.valueOf(elf1Score + elf2Score);
+            int newScore = elf1Score + elf2Score;
 
-            int newScore1 = Integer.parseInt(newScore.substring(0, 1));
+            int newScore1;
+
+            if (newScore < 10) {
+                newScore1 = newScore;
+            } else {
+                newScore1 = newScore / 10;
+            }
+
             doublyLinkedListCircular.insertAtTheEnd(newScore1);
 
             if (recipeNumber > 5) {
@@ -67,8 +87,8 @@ public class Day14 {
                 }
             }
 
-            if (newScore.length() > 1) {
-                int newScore2 = Integer.parseInt(newScore.substring(1, 2));
+            if (newScore >= 10) {
+                int newScore2 = newScore % 10;
                 doublyLinkedListCircular.insertAtTheEnd(newScore2);
                 recipeNumber++;
 
@@ -96,13 +116,13 @@ public class Day14 {
     }
 
     private static String getLastRecipes(List<Integer> items) {
-        StringBuilder recipes = new StringBuilder();
+        String recipes = "";
 
         for (int item : items) {
-            recipes.insert(0, item);
+            recipes = item + recipes;
         }
 
-        return recipes.toString();
+        return recipes;
     }
 
     private static class DoublyLinkedListCircular {
