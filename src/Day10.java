@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by Rene Argento on 08/12/18.
+ * Created by Rene Argento on 10/12/18.
  */
 public class Day10 {
 
