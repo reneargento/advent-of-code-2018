@@ -3,7 +3,7 @@ import java.util.*;
 /**
  * Created by Rene Argento on 05/12/18.
  */
-public class Day6_1 {
+public class Day6 {
 
     private static class Coordinate {
         int row;
@@ -16,6 +16,7 @@ public class Day6_1 {
     }
 
     public static void main(String[] args) {
+        // Part 1
         int dimension = 400;
         Scanner scanner = new Scanner(System.in);
         int[][] matrix = new int[dimension][dimension];
@@ -58,6 +59,10 @@ public class Day6_1 {
         }
 
         System.out.println("Max area: " + maxArea);
+
+        // Part 2
+        int regionSize = computeRegionSize(coordinates, areas);
+        System.out.println("Region size: " + regionSize);
     }
 
     private static void floodFill(int[][] matrix, Coordinate source, int[][] areas) {
@@ -147,6 +152,26 @@ public class Day6_1 {
 
     private static int getManhattanDistance(Coordinate coordinate1, Coordinate coordinate2) {
         return Math.abs(coordinate1.row - coordinate2.row) + Math.abs(coordinate1.column - coordinate2.column);
+    }
+
+    private static int computeRegionSize(List<Coordinate> coordinates, int[][] areas) {
+        int targetDistance = 10000;
+        int regionSize = 0;
+
+        for (int row = 0; row < areas.length; row++) {
+            for (int column = 0; column < areas[0].length; column++) {
+                int totalDistance = 0;
+
+                for (Coordinate coordinate : coordinates) {
+                    totalDistance += getManhattanDistance(coordinate, new Coordinate(row, column));
+                }
+
+                if (totalDistance < targetDistance) {
+                    regionSize++;
+                }
+            }
+        }
+        return regionSize;
     }
 
 }

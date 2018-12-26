@@ -4,12 +4,17 @@ import java.util.Stack;
 /**
  * Created by Rene Argento on 05/12/18.
  */
-public class Day5_2 {
+public class Day5 {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String polymer = scanner.next();
 
+        // Part 1
+        int unitsRemaining = react(polymer, '-');
+        System.out.println("Units remaining: " + unitsRemaining);
+
+        // Part 2
         int minLength = Integer.MAX_VALUE;
 
         for (char unit = 'a'; unit <= 'z'; unit++) {

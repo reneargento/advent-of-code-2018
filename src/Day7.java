@@ -4,7 +4,7 @@ import java.util.*;
  * Created by Rene Argento on 05/12/18.
  */
 @SuppressWarnings("unchecked")
-public class Day7_2 {
+public class Day7 {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -52,16 +52,44 @@ public class Day7_2 {
             adjacent[vertex1Id].add(vertex2Id);
         }
 
-        List<Integer>[] reverseGraph = invertGraphEdges(adjacent);
-        Set<Integer>[] dependencies = getDependencies(vertices, reverseGraph);
+        String stepsOrder = getStepsOrder(idToVertexMap, vertexToIdMap, adjacent);
+        System.out.println("Steps order: " + stepsOrder);
 
-        int[] topologicalSort = khanTopologicalSort(adjacent, vertices, idToVertexMap);
-        int maxTime = getMaxTime(topologicalSort, idToVertexMap, dependencies);
-
+        int maxTime = getMaxTime(idToVertexMap, vertexToIdMap, adjacent);
         System.out.println("Max time spent: " + maxTime);
     }
 
-    private static int[] khanTopologicalSort(List <Integer> adj[], int vertices, Map<Integer, String> idToVertexMap) {
+    private static String getStepsOrder(Map<Integer, String> idToVertexMap, Map<String, Integer> vertexToIdMap,
+                                        List<Integer>[] adjacent) {
+        int vertices = vertexToIdMap.size();
+        Queue<Integer> priorityQueue = new PriorityQueue<>((vertexId1, vertexId2) -> {
+            String vertex1 = idToVertexMap.get(vertexId1);
+            String vertex2 = idToVertexMap.get(vertexId2);
+            return vertex1.compareTo(vertex2);
+        });
+
+        int[] topologicalSort = khanTopologicalSort(adjacent, vertices, priorityQueue);
+        StringBuilder stepsOrder = new StringBuilder();
+
+        for(int vertexId : topologicalSort) {
+            String vertex = idToVertexMap.get(vertexId);
+            stepsOrder.append(vertex);
+        }
+
+        return stepsOrder.toString();
+    }
+
+    private static int getMaxTime(Map<Integer, String> idToVertexMap, Map<String, Integer> vertexToIdMap,
+                                  List<Integer>[] adjacent) {
+        int vertices = vertexToIdMap.size();
+        List<Integer>[] reverseGraph = invertGraphEdges(adjacent);
+        Set<Integer>[] dependencies = getDependencies(vertices, reverseGraph);
+
+        int[] topologicalSort = khanTopologicalSort(adjacent, vertices, new LinkedList<>());
+        return getMaxTime(topologicalSort, idToVertexMap, dependencies);
+    }
+
+    private static int[] khanTopologicalSort(List <Integer> adj[], int vertices, Queue<Integer> queue) {
         int indegree[] = new int[vertices];
 
         for(int i = 0; i < vertices; i++) {
@@ -71,7 +99,6 @@ public class Day7_2 {
             }
         }
 
-        Queue<Integer> queue = new LinkedList<>();
         for(int vertex = 0; vertex < vertices; vertex++) {
             if(indegree[vertex] == 0)
                 queue.add(vertex);

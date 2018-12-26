@@ -7,15 +7,16 @@ import java.util.*;
 /**
  * Created by Rene Argento on 01/12/18.
  */
-public class Day1_2 {
+public class Day1 {
 
     private static final String PATH = "/Users/rene/Desktop/Algorithms/Competitions/Advent of Code/2018/";
-    private static final String FILE_INPUT_PATH = PATH + "day1_2.txt";
+    private static final String FILE_INPUT_PATH = PATH + "day1.txt";
 
     public static void main(String[] args) {
         Set<Long> frequenciesFound = new HashSet<>();
         frequenciesFound.add(0L);
         long deltaFrequency = 0;
+        boolean finishedFirstRun = false;
 
         while (true) {
             List<String> frequencies = readFileInput(FILE_INPUT_PATH);
@@ -41,6 +42,11 @@ public class Day1_2 {
                 }
 
                 frequenciesFound.add(deltaFrequency);
+            }
+
+            if (!finishedFirstRun) {
+                System.out.println("Delta frequency: " + deltaFrequency);
+                finishedFirstRun = true;
             }
 
             if (frequencyFound) {
